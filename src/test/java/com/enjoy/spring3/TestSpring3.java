@@ -1,6 +1,5 @@
 package com.enjoy.spring3;
 
-import com.enjoy.spring2.config.DogConfig;
 import com.enjoy.spring3.config.DogConfig3;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
