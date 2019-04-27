@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
  * @date 2019/4/27 15:13
  */
 @Repository
+
 public class OrderDao {
 
 }
