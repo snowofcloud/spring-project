@@ -20,7 +20,7 @@ public class MainConfigOfLifeCycle {
         return new com.enjoy.spring.Dog("黑色",12,"large");
     }
 
-    @Scope("prototype")//多实例的应用
+    //@Scope("prototype")//多实例的应用
     @Bean(initMethod = "init", destroyMethod = "destory")
     public Bike bike(){
         return new Bike();
