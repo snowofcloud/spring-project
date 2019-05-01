@@ -26,3 +26,5 @@ hs_err_pid*
 
 /spring-project.iml
 /target/
+/.idea/
+/.gitignore
