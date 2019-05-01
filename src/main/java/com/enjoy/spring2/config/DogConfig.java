@@ -1,7 +1,6 @@
 package com.enjoy.spring2.config;
 
 import com.enjoy.spring.Dog;
-import com.enjoy.spring2.controller.OrderController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
