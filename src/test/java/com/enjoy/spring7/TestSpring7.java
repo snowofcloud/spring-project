@@ -1,6 +1,7 @@
 package com.enjoy.spring7;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import com.enjoy.spring7.config.MainConfigOfLifeCycle;
 /**
@@ -10,6 +11,7 @@ import com.enjoy.spring7.config.MainConfigOfLifeCycle;
 public class TestSpring7 {
 
     @Test
+    @Autowired
     public void test7(){
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MainConfigOfLifeCycle.class);
 
