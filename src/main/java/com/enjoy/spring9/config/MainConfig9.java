@@ -4,6 +4,7 @@ import com.enjoy.spring9.dao.TestDao;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,8 +15,8 @@ import org.springframework.stereotype.Component;
 @ComponentScan({"com.enjoy.spring9.controller","com.enjoy.spring9.service","com.enjoy.spring9.dao"})
 public class MainConfig9 {
     //spring进行自装配的时候默认首选的bean
-    //@Primary
-    @Bean("testDao")
+    @Primary
+    @Bean("testDao2")
     public TestDao testDao(){
         TestDao testDao = new TestDao();
         testDao.setFlag("2");

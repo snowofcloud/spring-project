@@ -16,17 +16,14 @@ public class TestSpring9 {
     public void test01(){
         AnnotationConfigApplicationContext app = new AnnotationConfigApplicationContext(MainConfig9.class);
 
-        TestService testService = app.getBean(TestService.class);
+        /*TestService testService = app.getBean(TestService.class);
         testService.println();
         //直接从容器中获取TestDao, 和使用Autowired注解来取比较
         TestDao testDao = app.getBean(TestDao.class);
         System.out.println(testDao);
-
+*/
+        System.out.println(app);
         app.close();
-
-
-
-
 
     }
 }
