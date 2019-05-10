@@ -14,7 +14,7 @@ import java.io.IOException;
  * @date 2019/4/27 16:12
  */
 public class BobTypeFilter implements TypeFilter {
-    @Override
+    //@Override
     public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory)
             throws IOException {
         //获取当前类的注解信息
