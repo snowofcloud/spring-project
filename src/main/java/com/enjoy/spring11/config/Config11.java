@@ -5,6 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
@@ -15,7 +18,7 @@ import java.beans.PropertyVetoException;
  */
 @Configuration
 @ComponentScan("com.enjoy.spring11")
-
+@EnableTransactionManagement//开启事务管理功能，对@Transactional起作用  EnableTransactionManagement
 public class Config11 {
 
     @Bean
@@ -35,7 +38,11 @@ public class Config11 {
         return new JdbcTemplate(dataSource());
     }
 
-
+    //注册事务管理器
+    @Bean
+    public PlatformTransactionManager platformTransactionManager() throws PropertyVetoException{
+        return new DataSourceTransactionManager(dataSource());
+    }
 
 
 }

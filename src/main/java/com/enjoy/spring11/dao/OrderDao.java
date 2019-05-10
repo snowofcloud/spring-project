@@ -17,7 +17,7 @@ public class OrderDao {
 
     public void insert(){
         String s = "insert into t_account_info (accountId,balance) values (?,?)";
-        jdbcTemplate.update(s,123,789);
+        jdbcTemplate.update(s,666,77);
     }
 
 }
