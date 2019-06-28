@@ -9,14 +9,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  * @date 2019/4/27 19:59
  */
 public class TestSpring4 {
-
-
     @Test
     public void testSpring4() {
         AnnotationConfigApplicationContext app = new AnnotationConfigApplicationContext(DogConfig4.class);
         System.out.println("IOC容器创建完成。。。");
         app.getBean("dog");//执行获取的时候才创建并初始化bean
     }
-
-
 }

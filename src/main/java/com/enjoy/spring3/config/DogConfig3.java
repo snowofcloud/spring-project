@@ -16,7 +16,7 @@ public class DogConfig3 {
      * request: 主要针对web应用, 递交一次请求创建一个实例
      * session:同一个session创建一个实例
      */
-    //@Scope("prototype")
+    @Scope("prototype")
     //@Bean注解不指定时会以方法名作为id，指定时就以ddd为id,然后注入ioc容器里面
     @Bean //默认单例
     public Dog dog() {

@@ -10,9 +10,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class MainTest01 {
 
     public static void main(String args[]) {
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("beans.xml");
-        Dog dog = (Dog) applicationContext.getBean("dog");
-
+        //早期的基于xml注入bean实例， 通过ClassPathXmlApplicationContext获取bean,
+        ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("beans.xml");
+        Dog dog = (Dog)applicationContext.getBean("dogg");
         System.out.println(dog.toString());
 
     }

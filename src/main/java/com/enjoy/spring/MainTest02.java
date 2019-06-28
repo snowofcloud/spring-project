@@ -11,8 +11,9 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class MainTest02 {
 
     public static void main(String args[]) {
+        //AnnotationConfigApplicationContext注解配置用来获取IOC容器，
         ApplicationContext aa = new AnnotationConfigApplicationContext(DogConfig.class);
-        Dog dog = (Dog) aa.getBean("ddd");
+        Dog dog = (Dog) aa.getBean("dd23d");
         System.out.println(dog.toString());
 
         String[] type = aa.getBeanNamesForType(Dog.class);

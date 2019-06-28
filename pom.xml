@@ -9,6 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
+       <!-- spring ioc注入bean：从xml到注解-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
@@ -20,6 +21,13 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+        <!-- spring ioc注入bean：从xml到注解-->
+
+
+
+
+
+
         <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>

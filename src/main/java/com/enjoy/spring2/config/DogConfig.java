@@ -16,7 +16,7 @@ import org.springframework.context.annotation.FilterType;
 },useDefaultFilters = false)
 public class DogConfig {
     //@Bean注解不指定时会以方法名作为id，指定时就以ddd为id,然后注入ioc容器里面
-    @Bean("ddd")
+    @Bean("dddssss")
     public Dog dog() {
         return new Dog("黑色",12,"large");
     }

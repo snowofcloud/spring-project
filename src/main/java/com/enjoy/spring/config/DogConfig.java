@@ -10,9 +10,10 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class DogConfig {
-    //@Bean注解不指定时会以方法名作为id，指定时就以ddd为id,然后注入ioc容器里面
-    @Bean("ddd")
-    public Dog dog() {
+    //@Bean注解的id不指定时会以方法名作为id，指定时就以ddd为id,然后注入ioc容器里面
+    //@Bean
+    @Bean("dd23d")
+    public Dog dogg() {
         return new Dog("黑色",12,"large");
     }
 }

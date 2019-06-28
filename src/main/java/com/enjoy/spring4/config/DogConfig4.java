@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Lazy;
  */
 @Configuration
 public class DogConfig4 {
-
     //给容器中注册一个bean, 类型为返回值的类型, 默认是单实例
     /*
      * 懒加载: 主要针对单实例bean:默认在容器启动的时候创建对象
