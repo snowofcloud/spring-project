@@ -11,7 +11,7 @@ public class LinCondition implements Condition{
 	 *ConditionContext: 判断条件可以使用的上下文(环境)
 	 *AnnotatedTypeMetadata: 注解的信息
 	 */
-	@Override
+	//@Override
 	public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
 		// TODO 是否为WINDOW系统
 		//能获取到IOC容器正在使用的beanFactory

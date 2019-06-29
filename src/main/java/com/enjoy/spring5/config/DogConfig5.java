@@ -3,11 +3,13 @@ package com.enjoy.spring5.config;
 import com.enjoy.spring.Dog;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @auther xuxq
  * @date 2019/4/27 22:07
  */
+@Configuration
 public class DogConfig5 {
 
     @Bean("dog1")
@@ -29,7 +31,5 @@ public class DogConfig5 {
         System.out.println("给容器中注入langDog");
         return new Dog("黄色",32,"middle");
     }
-
-
 
 }
