@@ -13,7 +13,8 @@ public class TestSpring7 {
     @Test
     @Autowired
     public void test7(){
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MainConfigOfLifeCycle.class);
+        AnnotationConfigApplicationContext context =
+                new AnnotationConfigApplicationContext(MainConfigOfLifeCycle.class);
 
         System.out.println("ioc容器创建完成。。。。。。。。。。。。。。");
         context.close();

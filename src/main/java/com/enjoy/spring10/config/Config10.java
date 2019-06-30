@@ -20,7 +20,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
  *     环绕通知:动态代理, 需要手动执行joinPoint.procced()(其实就是执行我们的目标方法div,), 执行之前div()相当于前置通知, 执行之后就相当于我们后置通知(@Around)
  */
 @Configuration
-@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy  //AOP开关，
 public class Config10 {
     @Bean
     public Calculator calculator(){
