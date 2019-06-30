@@ -23,21 +23,22 @@
         </dependency>
         <!-- spring ioc注入bean：从xml到注解-->
 
-
-
-
-
-
+        <!--inject第三方依赖-->
         <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
             <version>1</version>
         </dependency>
+        <!--inject第三方依赖-->
+
+        <!--AOP依赖-->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>
             <version>5.0.6.RELEASE</version>
         </dependency>
+        <!--AOP依赖-->
+
 
         <dependency>
             <groupId>c3p0</groupId>

@@ -15,7 +15,7 @@ spring第一次课：{
 		IOC就是一个大的map集合，key就是bean实例的id，value就是这个实例；
 		IOC对bean进行管理：bean的注册、实例、管理；
 	}
-	
+
 	Spring的目标：{
 		
 		1/让现有的技术更容易使用，
@@ -123,7 +123,8 @@ spring第一次课：{
 			}
 			
 			2/@Configuration注解注入一个bean：{
-				
+				//@Configuration用于定义配置类，可替换xml配置文件，被注解的类内部包含有一个或多个被@Bean注解的方法，
+				//这些方法将会被AnnotationConfigApplicationContext或AnnotationConfigWebApplicationContext类进行扫描，并用于构建bean定义，初始化Spring容器。
 				@Configuration注解注册bean：{
 					@Configuration
 					public class DogConfig {
@@ -135,10 +136,10 @@ spring第一次课：{
 						}
 					}
 				}
-				
+
 				Dog实体类：{}
-				
-				测试：{				
+
+				测试：{
 					public static void main(String args[]) {
 						//AnnotationConfigApplicationContext注解配置用来获取IOC容器，
 						ApplicationContext aa = new AnnotationConfigApplicationContext(DogConfig.class);
@@ -151,9 +152,9 @@ spring第一次课：{
 						}
 					}
 				}
-				
+
 			}
-			
+
 			3/ComponentScan扫描规则：
 			@ComponentScan(value = "com.enjoy.spring2"):通过扫描组件，扫描某个包下的所有的类，注入bean,声明扫描组件的作用范围：{
 				应用：
@@ -164,28 +165,28 @@ spring第一次课：{
 					includeFilters：只包含哪些bean，
 					useDefaultFilters = false：使用默认的配置，自己的配置会不起作用的，需要去掉默认的影响，才能让自己的配置起作用。
 					会默认将类的首字母小写作为bean的id，如orderController；
-					
+
 					//排除某些类，
 					3.2/@ComponentScan(value = "com.enjoy.spring2",excludeFilters = {
 							@ComponentScan.Filter(type = FilterType.ANNOTATION,classes = {Controller.class})
 					},useDefaultFilters = true)
-					
+
 					//根据类型，扫描哪些类
 					3.3/@ComponentScan(value = "com.enjoy.spring2",includeFilters = {
 							@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,classes = {OrderController.class})
 					},useDefaultFilters = false)
-				
+
 				总结如下：
-					@ComponentScan(value="com.enjoy.cap2",includeFilters={ 
-						@Filter(type=FilterType.ANNOTATION,classes={Controller.class}),		
+					@ComponentScan(value="com.enjoy.cap2",includeFilters={
+						@Filter(type=FilterType.ANNOTATION,classes={Controller.class}),
 						@Filter(type=FilterType.ASSIGNABLE_TYPE,classes={BookService.class})
-					},useDefaultFilters=false) 
-					
+					},useDefaultFilters=false)
+
 					//@ComponentScan value:指定要扫描的包
 					//excludeFilters = Filter[] 指定扫描的时候按照什么规则排除那些组件
 					//includeFilters = Filter[] 指定扫描的时候只需要包含哪些组件
 					//useDefaultFilters = false 默认是true,扫描所有组件，要改成false,使用自定义扫描范围
-					
+
 					//－－－－扫描规则如下
 					//FilterType.ANNOTATION：按照注解
 					//FilterType.ASSIGNABLE_TYPE：按照给定的类型；比如按BookService类型
@@ -196,7 +197,7 @@ spring第一次课：{
 					//FilterType.CUSTOM的例子,常用
 					先新增自定义过滤规则类:
 
-				
+
 				每个注解后面都跟着一个处理器，{
 					org.springframework.context.annotation.internalConfigurationAnnotationProcessor
 					org.springframework.context.annotation.internalAutowiredAnnotationProcessor
@@ -205,15 +206,15 @@ spring第一次课：{
 					org.springframework.context.event.internalEventListenerProcessor
 					org.springframework.context.event.internalEventListenerFactory
 				}
-			
-			}			
-	
+
+			}
+
 			4/@Scope扫描规则：{
 				Scope:作用范围，默认多实例，
 				1/单实例bean：
 				2/多实例bean
 				3/request和session
-				
+
 				/*
 				 * prototype:多实例: IOC容器启动的时候,IOC容器启动并不会去调用方法创建对象, 而是每次获取的时候才会调用方法创建对象
 				 * singleton:单实例(默认):IOC容器启动的时候会调用方法创建对象并放到IOC容器中,以后每次获取的就是直接从容器中拿(大Map.get)的同一个bean
@@ -221,7 +222,7 @@ spring第一次课：{
 				 * session:同一个session创建一个实例
 				 */
 				应用：{
-					 
+
 					DogConfig3：{
 						@Configuration
 						public class DogConfig3 {
@@ -239,8 +240,8 @@ spring第一次课：{
 								return new Dog("黑色",12,"large");
 							}
 						}
-					 } 
-					 
+					 }
+
 					public class TestSpring3 {
 						@Test
 						public void testSpring2(){
@@ -254,17 +255,17 @@ spring第一次课：{
 							System.out.println(dog==dog2);
 						}
 					}
-					
+
 				}
-				
+
 			}
-			
+
 			5/@lazy懒加载，也称延迟加载：{
 				仅当第一次使用时，加载这个bean；
 				 * 懒加载: 主要针对单实例bean:默认在容器启动的时候创建对象
 				 * 懒加载:容器启动时候不创建对象, 仅当第一次使用(获取)bean的时候才创建被初始化
 				应用：{
-					
+
 					DogConfig4：{
 						@Configuration
 						public class DogConfig4 {
@@ -281,7 +282,7 @@ spring第一次课：{
 							}
 						}
 					}
-					
+
 					测试：{
 						public class TestSpring4 {
 							@Test
@@ -291,81 +292,187 @@ spring第一次课：{
 								app.getBean("dog");//执行获取的时候才创建并初始化bean
 							}
 						}
-						
+
 					}
-					
+
 				}
 			}
-	
-	
-	
+
+
+
 			把配置声明到容器里面，
 			ioc会初始化很多bean对象，是一个大的map对象，
 			通过Configuration引入一个bean，
-			
+
 			@ComponentScan扫描规则：同上
 				@Controller，@Service，@Repository，@Component有这些注解的时候都会扫描进来，也可以做一些过滤规则，
 				3.2/@ComponentScan(value = "com.enjoy.spring2",excludeFilters = {
 						@ComponentScan.Filter(type = FilterType.ANNOTATION,classes = {Controller.class})
 				},useDefaultFilters = true)------->useDefaultFilters = true设置为true时，会默认加载所有的注解，因为有一个@Component注解，其他注解都实现了这个注解，
-			
-	
+
+
+			//后面用的容器来加载配置文件的bean，把配置文件bean的实例加载容器，用的类都是AnnotationConfigApplicationContext，
+
+			6/@Conditional注解可以--条件注册bean：{
+				当引入@Conditional时, 容器可以选择性的注册bean.
+				1/将IOC容器注册bean时, 当操作系统为WINDOWS时,注册Lison实例; 当操作系统为LINUX时, 注册James实例,此时要用得@Conditional注解进行定制化条件选择注册bean;
+
+				@Bean("james")//bean在容器中的ID为james, IOC容器MAP,  map.put("id",value)
+
+				*ConditionContext: 判断条件可以使用的上下文(环境)
+				*AnnotatedTypeMetadata: 注解的信息
+
+				配置：{
+					@Configuration
+					public class DogConfig5 {
+
+						@Bean("dog1")
+						public Dog dog() {
+							System.out.println("给容器中注入dog");
+							return new Dog("黑色",12,"large");
+						}
+
+						@Conditional(WinCondition.class)
+						@Bean("haBaDog1")
+						public Dog haBaDog() {
+							System.out.println("给容器中注入haBaDog");
+							return new Dog("百色",22,"small");
+						}
+
+						@Conditional(LinCondition.class)
+						@Bean("langDog1")
+						public Dog langDog() {
+							System.out.println("给容器中注入langDog");
+							return new Dog("黄色",32,"middle");
+						}
+					}
+				}
+
+				根据条件选择不同的实例，需要实现Condition：{
+					public class LinCondition implements Condition{
+						/*
+						 *ConditionContext: 判断条件可以使用的上下文(环境)
+						 *AnnotatedTypeMetadata: 注解的信息
+						 */
+						//@Override
+						public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+							// TODO 是否为WINDOW系统
+							//能获取到IOC容器正在使用的beanFactory
+							ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
+							//获取当前环境变量(包括我们操作系统是WIN还是LINUX??)
+							Environment environment = context.getEnvironment();
+							String os_name = environment.getProperty("os.name");
+							if(os_name.contains("linux")){
+								return true;
+							}
+							return false;
+						}
+					}
+
+					public class WinCondition implements Condition{
+						/*
+						 *ConditionContext: 判断条件可以使用的上下文(环境)
+						 *AnnotatedTypeMetadata: 注解的信息
+						 */
+						//@Override
+						public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
+							// TODO 是否为WINDOW系统
+							//能获取到IOC容器正在使用的beanFactory
+							ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
+							//获取当前环境变量(包括我们操作系统是WIN还是LINUX??)
+							Environment environment = context.getEnvironment();
+							String os_name = environment.getProperty("os.name");
+							if(os_name.contains("Windows")){
+								return true;
+							}
+							return false;
+						}
+					}
+
+				}
+
+				测试：{
+					public class TestSpring5 {
+						@Test
+						public void testSpring5(){
+							//当声明IOC容器时，
+							AnnotationConfigApplicationContext app = new AnnotationConfigApplicationContext(DogConfig5.class);
+							System.out.println("ioc容器创建完成。。。");
+							String[] names1 = app.getBeanNamesForType(Dog.class);
+							for (String name: names1) {
+								System.out.println(name);
+							}
+							//把所有的bean都打印出来，把所有的对象和id发到map里key  value
+							Map<String, Dog> beansOfType = app.getBeansOfType(Dog.class);
+							System.out.println(beansOfType);
+							/*打印结果：
+								给容器中注入dog
+								给容器中注入haBaDog
+								给容器中注入langDog
+								ioc容器创建完成。。。
+								dog1
+								haBaDog1
+								langDog1
+								{dog1=Dog{color='黑色', age=12, size='large'}, haBaDog1=Dog{color='百色', age=22, size='small'}, langDog1=Dog{color='黄色', age=32, size='middle'}}*/
+						}
+
+						//当引入@Conditional时, 容器可以选择性的注册bean.
+						@Test
+						public void testSpring55(){
+							//当声明IOC容器时，
+							AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+							//拿到IOC容器的环境
+							ConfigurableEnvironment environment = applicationContext.getEnvironment();
+							String property = environment.getProperty("os.name");
+							System.out.println(property);
+						}
+					}
+
+				}
+
+			}
+
+			@Import注册bean：{
+
+				1/手动添加组件到IOC容器;
+				2/使用ImportSelector自定义返回组件
+				3/使用ImportBeanDefinitionRegistrar返回自定义组件
+
+				/*
+				 * 给容器中注册组件的方式
+				 * 1,@Bean: [导入第三方的类或包的组件],比如Person为第三方的类, 需要在我们的IOC容器中使用
+				 * 2,包扫描+组件的标注注解(@ComponentScan:  @Controller, @Service  @Reponsitory  @ Componet),一般是针对 我们自己写的类,使用这个
+				 * 3,@Import:[快速给容器导入一个组件] 注意:@Bean有点简单
+				 *      a,@Import(要导入到容器中的组件):容器会自动注册这个组件,bean 的 id为全类名
+				 *      b,ImportSelector:是一个接口,返回需要导入到容器的组件的全类名数组
+							可以批量导入组件的全类名数组，自定义逻辑返回需要导入的组件。比如BobImportSelector；
+				 *      c,ImportBeanDefinitionRegistrar:可以手动添加组件到IOC容器, 所有Bean的注册可以使用BeanDifinitionRegistry
+				 *          写JamesImportBeanDefinitionRegistrar实现ImportBeanDefinitionRegistrar接口即可
+				 * 4,使用Spring提供的FactoryBean(工厂bean)进行注册，
+				 */
+
+			}
+
+
+			Factorybean接口实现：{
+				1/getObject()返回对象方法;
+				2/getObjectType返回对象类型
+				3/isSingleton()是否单例控制
+			}
+
+			//把类的实例注入到容器里面，
+			//当spring容器启动的时候，使用@Conditional会选择性注入bean，
+
+			//老师讲了：有多种往IOC容器注册bean的方式，
+			//AnnotationConfigApplicationContext app = new AnnotationConfigApplicationContext(DogConfig.class);  启动IOC容器，加载配置类（.xml或.class），把bean注入ioc容器里面，
+
+			//单实例：IOC容器启动就会把实例创建好，
+			//多实例：调用的时候才会创建，ioc启动并不会创建，
+
+			//BeanFactory 把bean放入缓存里了，从BeanFactory 拿bean,
 	}
 
-	
-	
-	//后面用的容器来加载配置文件的bean，把配置文件bean的实例加载容器，用的类都是AnnotationConfigApplicationContext，
 
-	@Conditional/
-		@Conditional条件注册bean：{
-		@Bean("james")//bean在容器中的ID为james, IOC容器MAP,  map.put("id",value)
-		
-		*ConditionContext: 判断条件可以使用的上下文(环境)
-		*AnnotatedTypeMetadata: 注解的信息
-		
-	}
-	
-	
-	@Import注册bean：{
-		
-		1/手动添加组件到IOC容器;
-		2/使用ImportSelector自定义返回组件
-		3/使用ImportBeanDefinitionRegistrar返回自定义组件
-		
-		/*
-		 * 给容器中注册组件的方式
-		 * 1,@Bean: [导入第三方的类或包的组件],比如Person为第三方的类, 需要在我们的IOC容器中使用
-		 * 2,包扫描+组件的标注注解(@ComponentScan:  @Controller, @Service  @Reponsitory  @ Componet),一般是针对 我们自己写的类,使用这个
-		 * 3,@Import:[快速给容器导入一个组件] 注意:@Bean有点简单
-		 *      a,@Import(要导入到容器中的组件):容器会自动注册这个组件,bean 的 id为全类名
-		 *      b,ImportSelector:是一个接口,返回需要导入到容器的组件的全类名数组
-		 *      c,ImportBeanDefinitionRegistrar:可以手动添加组件到IOC容器, 所有Bean的注册可以使用BeanDifinitionRegistry
-		 *          写JamesImportBeanDefinitionRegistrar实现ImportBeanDefinitionRegistrar接口即可
-		 * 4,使用Spring提供的FactoryBean(工厂bean)进行注册
-		 */
-
-	}
-	
-	
-	Factorybean接口实现：{
-		1/getObject()返回对象方法;
-		2/getObjectType返回对象类型
-		3/isSingleton()是否单例控制
-	}
-	
-	//把类的实例注入到容器里面，
-	//当spring容器启动的时候，使用@Conditional会选择性注入bean，
-	
-	//老师讲了：有多种往IOC容器注册bean的方式，
-	//AnnotationConfigApplicationContext app = new AnnotationConfigApplicationContext(DogConfig.class);  启动IOC容器，加载配置类（.xml或.class），把bean注入ioc容器里面，
-	
-	
-	//单实例：IOC容器启动就会把实例创建好，
-	//多实例：调用的时候才会创建，ioc启动并不会创建，
-	
-	//BeanFactory 把bean放入缓存里了，从BeanFactory 拿bean,
-	
-	
 }
 
 
@@ -373,66 +480,258 @@ Bean生命周期：{
 	单实例bean的生命周期的控制；
 		app.close();容器的销毁
 	源码bean的创建销毁，
-	
+
 	什么是Bean生命周期：{
 		Bean的生命周期指Bean创建-->初始化-->销毁 的过程
 		我们可以自定义Bean初始化和销毁方法
 		容器在bean进行到当前生命周期的时候, 来调用自定义的初始化和销毁方法
 	}
-	
+
 	生命周期-初始化与销毁1：{
 		1/指定初始化init-method方法
 		2/指定销毁destory-method方法
 
 		注:对于单实例的bean, 可以正常调用初始化和销毁方法
 		   对于多实例的bean, 容器只负责初始化, 但不会管理bean, 容器关闭时不会调用销毁方法
+
+
+		 应用：{
+
+				Bike::{
+					public class Bike {
+						public Bike() {
+							System.out.println("Bike  Construct.....");
+						}
+						public void init(){
+							System.out.println("Bikes init.........");
+						}
+						public void destory(){
+							System.out.println("Bike destory......");
+						}
+					}
+				}
+
+				配置类---MainConfigOfLifeCycle：{
+					@ComponentScan("com.enjoy.spring7.bean")
+					@Configuration
+					public class MainConfigOfLifeCycle {
+						@Bean("dog7")
+						public com.enjoy.spring.Dog dog() {
+							System.out.println("给容器中注入dog6");
+							return new com.enjoy.spring.Dog("黑色",12,"large");
+						}
+
+						//@Scope("prototype")//多实例的应用
+						@Bean(initMethod = "init", destroyMethod = "destory")
+						public Bike bike(){
+							return new Bike();
+						}
+					}
+				}
+		 }
 	}
-	
+
 	生命周期-初始化与销毁2：{
-		1/实现InitializingBean接口的afterPropertiesSet()方法,当beanFactory创建好对象,且把bean所有属性设置好之后,会调这个方法,相当于初始化方法
+		1/实现InitializingBean接口的afterPropertiesSet()方法,当beanFactory创建好对象,
+			且把bean所有属性设置好之后,会调这个方法,相当于初始化方法
 		2/实现DisposableBean的destory()方法,当bean销毁时,会把单实例bean进行销毁
+
+
+		应用-----：{
+
+			实例：{
+				@Component
+				public class Train implements InitializingBean, DisposableBean {
+					public Train() {
+						System.out.println("Train.....Constructor.....");
+					}
+
+					@Override
+					public void destroy() throws Exception {
+						System.out.println("Train.....destroy.....");
+					}
+
+					@Override
+					public void afterPropertiesSet() throws Exception {
+						System.out.println("Train.....afterPropertiesSet....");
+					}
+				}
+			}
+
+			@ComponentScan("com.enjoy.spring7.bean")
+			@Configuration
+			public class MainConfigOfLifeCycle {}
+		}
+
 	}
-	
+
 	生命周期-初始化与销毁3：{
 		可以使用JSR250规则定义的(java规范)两个注解来实现
 			@PostConstruct: 在Bean创建完成,且属于赋值完成后进行初始化,属于JDK规范的注解
 			@PreDestroy: 在bean将被移除之前进行通知, 在容器销毁之前进行清理工作
 			//跟一下源码
 		提示: JSR是由JDK提供的一组规范.
+
+		实例应用：{
+			@Component
+			public class Jeep {
+				public Jeep(){
+					System.out.println("Jeep.....constructor........");
+				}
+				@PostConstruct
+				public void init(){
+					System.out.println("Jeep.....@PostConstruct........");
+				}
+
+				@PreDestroy
+				public void destory(){
+					System.out.println("Jeep.....@PreDestroy......");
+				}
+			}
+
+		}
 	}
-	
+
+	//只有以上三种方式，以下是后置处理器，负责在初始化方法前后作用----
 	生命周期-BeanPostProcessors:{
-		bean的后置处理器,在bean初始化之前调用进行拦截,在bean初始化前后进行一些处理工作
+		BeanPostProcessor类-----bean的后置处理器,在bean初始化之前调用进行拦截,在bean初始化前后进行一些处理工作
 		使用BeanPostProcessors如何控制Bean的生命周期;
 			实现BeanPostProcessors的两个接口即可
 			1,postProcessBeforeInitialization()
 			2,postProcessAfterInitialization()
 
 	}
-	
+
+}
+
+注解本身就是一种增强，
+//@Bean
+//@Configration
+//@Value
+//@Autowired
+//@Resource
+
+spring第四次课：{
+
 	BeanPostProcessors源码初步分析：{
 		使用BeanPostProcessors如何控制Bean的生命周期;
 
+		BeanPostProcessor原理:{
+			可从容器类跟进顺序为:
+				AnnotationConfigApplicationContext-->refresh()-->
+				finishBeanFactoryInitialization(beanFactory)--->
+				beanFactory.preInstantiateSingletons()-->
+				760行getBean(beanName)--->
+				199行doGetBean(name, null, null, false)-->
+				317行createBean(beanName, mbd, args)-->
+				501行doCreateBean(beanName, mbdToUse, args)-->
+				541行createBeanInstance(beanName, mbd, args)(完成bean创建)-->
+				578行populateBean(beanName, mbd, instanceWrapper)(属性赋值)-->
+				579行initializeBean(beanName, exposedObject, mbd)(Bean初始化)->
+				1069行到1710行,后置处理器完成对init方法的前后处理.
+
+			最终得到如下如下
+				createBeanInstance(beanName, mbd, args)(完成bean创建)
+				populateBean(beanName, mbd, instanceWrapper); 给bean进行属性赋值
+				initializeBean() //初始化Bean方法内容如下,后置处理器对init方法的前后处理
+				{
+				  applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
+				invokeInitMethods(beanName, wrappedBean, mbd) //执行自定义初始化
+				  applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName)
+				}
+			从以上分析不难发现,bean的生命周期为bean的创建, 初始化, 当容器关闭时对单实例的bean进行销毁.
+
+		}
+
 	}
-	
-		
+
 	BeanPostProcessor也是一个bean，就是一个处置bean的bean，
 	bean在运行的时候才能获取其bean的类型，
 	BeanPostProcessor分析及组件使用：{
-		
 		Spring底层对BeanPostProcessor的使用：{
-			1/ApplicationContextAwareProcessor实现分析
-			2/BeanValidationPostProcess实现分析
-			3/InitDestroyAnnotationBeanPostProcessor实现分析
+			1/ApplicationContextAwareProcessor实现分析：{}
+			2/BeanValidationPostProcess实现分析：{}
+			3/InitDestroyAnnotationBeanPostProcessor实现分析：{}
 			总结:
 				Spring底层对BeanPostProcessor的使用, 包括bean的赋值, 注入其它组件, 生命周期注解功能等
+		}
+	}
+
+	//@Value
+	@Value 给bean的属性值赋值，{
+
+		Bird实体类：{
+			public class Bird {
+				//使用@Value进行赋值:1,基本字符  2,springEL表达式, 3,可以读取 我们的配置文件
+				@Value("James")
+				private String name;
+
+				@Value("#{20-2}")
+				private Integer age;
+
+				@Value("${bird.color}")
+				private String color;
+
+				public Bird() {
+					super();
+				}
+
+				public Bird(String name, Integer age, String color) {
+					super();
+					this.name = name;
+					this.age = age;
+					this.color = color;
+				}
+
+				public String getColor() {
+					return color;
+				}
+
+				public void setColor(String color) {
+					this.color = color;
+				}
+
+				@Override
+				public String toString() {
+					return "Bird [name=" + name + ", age=" + age + ", color=" + color + "]";
+				}
+
+				public String getName() {
+					return name;
+				}
+				public void setName(String name) {
+					this.name = name;
+				}
+				public Integer getAge() {
+					return age;
+				}
+
+				public void setAge(Integer age) {
+					this.age = age;
+				}
+			}
 
 		}
-		
-		
+
+		加载配置文件的属性值：{
+			@Configuration
+			@PropertySource(value = "classpath:/test.properties")
+			public class Config8 {
+
+				@Bean
+				public Bird bird(){
+					return new Bird();
+				}
+			}
+		}
+
+		test.properties：
+			bird.color=red
+
 	}
-	
-	
+
+
+	@Autowired @Service @Inject:
 	@Autowired @Qualifier @Primary自动装配：{
 		什么是是自动装配?
 			spring利用依赖注入(DI), 完成对IOC容器中的各个组件的依赖关系赋值
@@ -444,198 +743,341 @@ Bean生命周期：{
 		   5,@Primary 注解bean首选如何使用?
 		   6,@Autowired @Resource @Inject区别?
 	}
-	
-		
-}
 
 
-spring第四次课：{
-	
-	@Autowired其它加载方式：{
-		1,方法加载
-		2,方法内部的使用参数加载
-		3,构造方法加载
+	@Autowired@Qualifier @Resource @Inject：{
+
+		@Autowired：加载默认的bean
+
+		@Primary指定首选项，//spring自动装配的时候默认首选的bean，
+							//加上@Primary注解，与@Qualifier同事存在，
+
+		@Qualifier ("testDao")//加载指定的testDao,
+		@Autowired
+
+
+
+		@Autowired(required = false) //当加载的bean不存在时，不会报错，会出现空；(required = false)是非必须属性，
+
+		@Resource(name = "testDao")：//指定加载某一个bean,没有时就报错，
+									 //@Resource(JSR250)
+		@Inject  //用时，pom文件需要额外的引入，和Autowied功能差不多，支持@Primary，只是没有支持Autowired的required = false，
+			第三方的包，不是spring的注解，//JSR-330规范，
+			<dependency>
+				<groupId>javax.inject</groupId>
+				<artifactId>javax.inject</artifactId>
+				<version>1</version>
+			</dependency>
+
+		Autowired属于spring的, 不能脱离spring,  @Resource和@Inject都是JAVA规范推荐大家使用@Autowired
 	}
-	
+
+	//@Autowired
+	@Autowired其它加载方式，就是使用位置：
+		1,方法加载  方法上使用；
+		2,方法内部的使用参数加载，方法里参数的位置；
+		3,构造方法加载，构造方法上；
+
+
 	自动装配:Aware注入Spring组件原理：{
 		自定义组件想要使用Spring容器底层的组件(ApplicationContext, BeanFactory, ......)
 		自定义组件实现xxxAware, 在创建对象的时候, 会调用接口规定的方法注入到相关组件
 
 	}
-	
+
 	常见XXXAware接口：{
 		ApplicationContextAware接口: 获取IOC容器
 		BeanNameAware接口: 获取Bean信息
 		EmbeddedValueResolverAware接口: 解析器(表达式及相关脚本解析)
 
 	}
-	
+
 	容器对比及总结：{
 		ApplicationContextAware接口获取IOC容器
 		AnnotationConfigApplicationContext加载配置文件获取的容器
 
 		总结:
-			  把Spring底层的组件可以注入到自定义的bean中,ApplicationContextAware是利用ApplicationContextAwareProcessor来处理的, 
+			  把Spring底层的组件可以注入到自定义的bean中,ApplicationContextAware是利用ApplicationContextAwareProcessor来处理的,
 				其它XXXAware也类似, 都有相关的Processor来处理, XXXAware---->功能使用了XXXProcessor来处理的;
 		比如: ApplicaitonContextAware--->ApplicationContextProcessor后置处理器来处理的
 
 	}
-	
+
 }
 
 
 IOC把bean初始化丢到容器中，把bean放到map中，
-手写IOC:{
+手写IOC---简介---后面会有仔细介绍:{
 	//加载properties
 	//声明MAP
 	//ComponentScan()扫描ABC三个类，
 	//利用反射机制 ，把class文件加载进来，
 	//把instance bean，put入MAP
 }
-
+Spring IOO生命周期流程
 
 
 spring第五、六、七次课---AOP：{
-	
+
+	AOP: 面向切面编程[底层就是动态代理]
+		指程序在运行期间动态的将某段代码切入到指定方法位置进行运行的编程方式
+
+
+		简单应用：{
+
+			/*
+			 * 日志切面类的方法需要动态感知到div()方法运行,
+			 *  通知方法:
+			 *     前置通知:logStart(); 在我们执行div()除法之前运行(@Before)
+			 *     后置通知:logEnd();在我们目标方法div运行结束之后 ,不管有没有异常(@After)
+			 *     返回通知:logReturn();在我们的目标方法div正常返回值后运行(@AfterReturning)
+			 *     异常通知:logException();在我们的目标方法div出现异常后运行(@AfterThrowing)
+			 *     环绕通知:动态代理, 需要手动执行joinPoint.procced()(其实就是执行我们的目标方法div,), 执行之前div()相当于前置通知, 执行之后就相当于我们后置通知(@Around)
+			 */
+
+			1/先建立MainConfigOfAOP配置类:{
+				@Configuration
+				@EnableAspectJAutoProxy  //AOP开关，开启此注解
+				public class Config10 {
+					@Bean
+					public Calculator calculator(){
+						return new Calculator();
+					}
+
+					@Bean
+					public LogAspects logAspects(){
+						return new LogAspects();
+					}
+				}
+
+			}
+
+			2/在POM.XML中导入spring-aspects依赖包:{
+				<dependency>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-aspects</artifactId>
+					<version>5.0.6.RELEASE</version>
+				</dependency>
+			}
+
+			3/新建立一个业务逻辑类Calculator.java:{
+
+				public class Calculator {
+					//业务逻辑方法
+					public int div(int i, int j){
+						System.out.println("--------");
+						return i/j;
+					}
+				}
+
+
+			}
+
+			4/新建一个日志切面类....:{
+				//日志切面类
+				@Aspect
+				public class LogAspects {
+					@Pointcut("execution(public int com.enjoy.spring10.aop.Calculator.*(..))")
+					public void pointCut(){}
+
+					//@before代表在目标方法执行前切入, 并指定在哪个方法前切入
+					@Before("pointCut()")
+					public void logStart(JoinPoint joinPoint){
+
+						System.out.println(joinPoint.getSignature().getName() + "除法运行....参数列表是:{" + Arrays.asList(joinPoint.getArgs()) + "}");
+					}
+
+					@After("pointCut()")
+					public void logEnd(JoinPoint joinPoint){
+						System.out.println(joinPoint.getSignature().getName() + "除法结束......");
+
+					}
+					@AfterReturning(value = "pointCut()", returning = "result")
+					public void logReturn(Object result){
+						System.out.println("除法正常返回......运行结果是:{" + result + "}");
+					}
+
+					@AfterThrowing(value = "pointCut()", throwing = "exception")
+					public void logException(Exception exception){
+						System.out.println("运行异常......异常信息是:{"+ exception +"}");
+					}
+
+					@Around("pointCut()")
+					public Object Around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable{
+						System.out.println("@Arount:执行目标方法之前...");
+						Object obj = proceedingJoinPoint.proceed();//相当于开始调div地
+						System.out.println("@Arount:执行目标方法之后...");
+						return obj;
+					}
+				}
+
+
+			}
+
+			5/测试{
+				public class TestSpring10 {
+					@Test
+					public void test01(){
+						AnnotationConfigApplicationContext app = new AnnotationConfigApplicationContext(Config10.class);
+						//Calculator c = new Calculator();
+						Calculator c = app.getBean(Calculator.class);
+						int result = c.div(4, 3);
+						System.out.println(result);
+						app.close();
+					}
+				}
+
+			}
+
+		}
+
+
+
+
+
+
+
+
+
+
+
+
 	EnabledAspectAutoProxy--->AspectAutoProxyRegistrar--->
-	
+
 	//AnnotationAwareAspectJAutoProxyCreator对bean进行创建和拦截，
 	AnnotationAwareAspectJAutoProxyCreator--->
-	
-	
+
+
 	所有的bean都有前置处理和后置处理，
 	一般的bean放在
-	
-	
-	spring都保留如下如下这两种方式，
-	JDK：//实现接口 
-		invocationHandler,Proxy,反射。。 
-	CGlib继承要被动态(继承)
-	
-}		
 
-注解本身就是一种增强，
+
+	spring都保留如下如下这两种方式，
+	JDK：//实现接口
+		invocationHandler,Proxy,反射。。
+	CGlib继承要被动态(继承)
+
+}
+
+
 断言就如同if，判断，
- 
- 
- 
+
+
+
 只要和注解相关，都可以理解为增强，
 spring第八次课---声明式事务：{
 	大事务里嵌套小事务，
-	
 
 
-	
-	
-	
-	
+
+
+
+
+
 }
 
 
 spring第九、十次课-----IOC源码解读：{
-	
+
 }
 
 
 springMVC第十一、十二次课：{
-	
+
 	struts/spring都是基于servlet改造的
 	常用的WEB三大组件：
 		servlet
 		filter
 		listenter
 		我们经常在web.xml中使用，
-		
+
 		servlet3.0：{
 			共享库和运行时插件，
 			servlet的一个web组件，怎么注册web组件，
-			
+
 			tomcat容器启动的时候，它会把我们感兴趣的东西要实例化东西(如果有需要可以做反射，实例化出来，用来做一些检测性的东西)，
 				同时也会拿到ServletContext来做一些事情，如注册OrderServlet组件------>ServletContext参数代表当前web应用，注册3大组件，
 		}
-		
+
 		webMVC接近于更前端的，web接近控制层，
-		
-		
-		
+
+
+
 	同步：从头到尾，同一个线程进行服务
 	异步：---->主线程--->副线程，
-	
+
 	springMVC提供了异步处理线程池，
 		两种方式实现异步处理：
 			Callable<T>
-			DeferredResult<T> 
-	
-	
+			DeferredResult<T>
+
+
 }
 
 
 spring总结----spring大结局：{
-	
+
 	1/将你的工程从XML配置到注解：{
 		1.1/XML方式
 			//把beans.xml的类加载到容器
-			ApplicationContext app = new ClassPathXmlApplicationContext("beans.xml"); 
+			ApplicationContext app = new ClassPathXmlApplicationContext("beans.xml");
 			//从容器中获取bean
 			Person person = (Person) app.getBean("person");
-		
+
 		1.2/
 		AnnotationConfigApplicationContext app = new AnnotationConfigApplicationContext(Cap6MainConfig.class);
 		Object bean1 = app.getBean("jamesFactoryBean");
 		bean加载到ioc容器里面，
 			为什么通过getBean会拿到对应id的bean，因为IOC容器的最顶层是beanFactory,
 	}
-	
+
 	2/ComponentScan扫描规则：{
-		
-		扫描哪些类需要需要注入IOC容器里，扫描哪些组件，不扫描哪些组件；----定制化扫描， 
-		
-		@ComponentScan(value="com.enjoy.cap2", includeFilters={		
-				@Filter(type=FilterType.ANNOTATION, classes={Controller.class})		
+
+		扫描哪些类需要需要注入IOC容器里，扫描哪些组件，不扫描哪些组件；----定制化扫描，
+
+		@ComponentScan(value="com.enjoy.cap2", includeFilters={
+				@Filter(type=FilterType.ANNOTATION, classes={Controller.class})
 		}, useDefaultFilters=false)
-		
+
 		因为Controller、Service、Reposity这些注解都实现了@Component,useDefaultFilters=true回把所有的注解都加载进来，为false时useDefaultFilters才起作用，
-		
+
 	}
-	
+
 	3/Scope扫描规则：{
 		Scope扫描 默认的bean是单实例的，
-		懒加载 
-		
+		懒加载
+
 	}
-	
+
 	4/Condational扫描规则：{
-		 
-		
+
+
 	}
-	
+
 	5/@Import扫描规则：{
-		
-		
+
+
 	}
-	
+
 	7/的生命周期：{
-	
+
 	}
-	
+
 	8/@Value{
 		应用，
 	}
-	
+
 	9/@Autowired自动装配{
-		 
+
 	}
-	
-	
+
+
 }
 
 
 springMVC-----手写springMVC：{
-	
+
 }
-
-
-
 
 
 
@@ -643,10 +1085,10 @@ springMVC-----手写springMVC：{
 bean的初始化过程
 如果变量被所有的方法引用要声明为全局的，只备一个方法使用，没必要使用全局变量，
 FactoryBean和BeanFactory 的区别？{
-	
+
 	FactoryBean：可以把我们java实例bean通过FactoryBean注入到容器中，
 	BeanFactory：从我们的容器中获取实例化后的beans,
-	
+
 }
 
 AWS存储
@@ -656,55 +1098,6 @@ AOP源码，processor后置处理器，
 war模式：将WEB工程以包的形式上传到服务器 ；
 war exploded模式：将WEB工程以当前文件夹的位置关系上传到服务器；
 https://blog.csdn.net/weixin_41614924/article/details/80986402
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

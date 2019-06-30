@@ -14,7 +14,7 @@ import java.util.Arrays;
 @Aspect
 public class LogAspects {
     @Pointcut("execution(public int com.enjoy.spring10.aop.Calculator.*(..))")
-    public void pointCut(){};
+    public void pointCut(){}
 
     //@before代表在目标方法执行前切入, 并指定在哪个方法前切入
     @Before("pointCut()")
