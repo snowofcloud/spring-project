@@ -17,7 +17,7 @@ spring第一次课：{
 	}
 
 	Spring的目标：{
-		
+
 		1/让现有的技术更容易使用，
 		2/促进良好的编程习惯。
 
@@ -25,9 +25,9 @@ spring第一次课：{
 			已经有较好解决方案的领域，Spring绝不重复性实现，比如：对象持久化和OR映射，Spring只对现有的JDBC，Hibernate等技术提供支持，使之更容易使用，而不做重复的实现。
 			Spring框架有很多特性，这些特性由7个定义良好的模块构成。
 	}
-	
+
 	Spring体系结构:{
-		
+
 		1/Spring Core：即，Spring核心，它是框架最基础的部分，提供IOC和依赖注入特性
 		2/Spring Context：即，Spring上下文容器，它是BeanFactory功能加强的一个子接口
 		3/Spring Web：它提供Web应用开发的支持
@@ -35,18 +35,18 @@ spring第一次课：{
 		5/Spring DAO：提供对JDBC抽象层，简化了JDBC编码，同时，编码更具有健壮性。
 		6/Spring ORM：它支持用于流行的ORM框架的整合，比如：Spring + Hibernate、Spring + iBatis、Spring + JDO的整合等等。
 		7/Spring AOP：AOP即，面向切面编程，它提供了与AOP联盟兼容的编程实现
-		
+
 	}
 
 	Spring常用组件：{
-		
+
 	}
-	
-	
+
+
 	bean的注入方式：{
-		
+
 			1/最原始的用法---xml注入一个bean：{
-				
+
 				beans.xml文件：{
 					<?xml version="1.0" encoding="UTF-8"?>
 					<beans xmlns="http://www.springframework.org/schema/beans"
@@ -60,7 +60,7 @@ spring第一次课：{
 						</bean>
 					</beans>
 				}
-				
+
 				Dog实体类：{
 					public class Dog {
 
@@ -110,7 +110,7 @@ spring第一次课：{
 						}
 					}
 				}
-				
+
 				测试：{
 					public static void main(String args[]) {
 						//早期的基于xml注入bean实例， 通过ClassPathXmlApplicationContext获取bean,
@@ -121,7 +121,7 @@ spring第一次课：{
 				}
 				spring把id为dogg的类，路径为com.cang.Dog，注入到IOC容器，通过id获取使用;
 			}
-			
+
 			2/@Configuration注解注入一个bean：{
 				//@Configuration用于定义配置类，可替换xml配置文件，被注解的类内部包含有一个或多个被@Bean注解的方法，
 				//这些方法将会被AnnotationConfigApplicationContext或AnnotationConfigWebApplicationContext类进行扫描，并用于构建bean定义，初始化Spring容器。
@@ -817,7 +817,7 @@ IOC把bean初始化丢到容器中，把bean放到map中，
 Spring IOO生命周期流程
 
 
-spring第五、六、七次课---AOP：{
+spring第五、六、七次课---AOP讲解及源码：{
 
 	AOP: 面向切面编程[底层就是动态代理]
 		指程序在运行期间动态的将某段代码切入到指定方法位置进行运行的编程方式
@@ -934,12 +934,10 @@ spring第五、六、七次课---AOP：{
 
 
 
+		AOP源码分析1：{}
 
 
-
-
-
-
+		AOP源码分析2：{}
 
 
 	EnabledAspectAutoProxy--->AspectAutoProxyRegistrar--->
@@ -962,13 +960,124 @@ spring第五、六、七次课---AOP：{
 
 断言就如同if，判断，
 
-
-
 只要和注解相关，都可以理解为增强，
 spring第八次课---声明式事务：{
 	大事务里嵌套小事务，
 
+	简单应用：{
 
+		添加依赖：{
+			1， 环境搭建：导入数据源、数据库驱动、Spring-jdbc依赖
+				在pom.xml新增c3p0依赖包(c3p0封装了jdbc 对DataSource接口的实现)
+			<dependency>
+				<groupId>c3p0</groupId>
+				<artifactId>c3p0</artifactId>
+				<version>0.9.1.2</version>
+			</dependency>
+			<!--数据库驱动-->
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>5.1.44</version>
+			</dependency>
+			<!--数据库驱动-->
+			<!--jdbc-->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jdbc</artifactId>
+				<version>5.0.6.RELEASE</version>
+			</dependency>
+			<!--jdbc-->
+
+		}
+
+		2/新建Cap10MainConfig,将数据源和操作模板加载到IOC容器中：{
+
+			@Configuration
+			@ComponentScan("com.enjoy.spring11")
+			@EnableTransactionManagement//开启事务管理功能，对@Transactional起作用  EnableTransactionManagement
+			public class Config11 {
+
+				@Bean
+				public DataSource dataSource() throws PropertyVetoException {
+
+					ComboPooledDataSource dataSource = new ComboPooledDataSource();
+					dataSource.setUser("root2");
+					dataSource.setPassword("123456");
+					dataSource.setDriverClass("com.mysql.jdbc.Driver");
+					dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/test");
+					return dataSource;
+				}
+
+				//jdbcTemplate能简化增删查改的操作
+				@Bean
+				public JdbcTemplate jdbcTemplate() throws PropertyVetoException{
+					return new JdbcTemplate(dataSource());
+				}
+
+				//注册事务管理器
+				@Bean
+				public PlatformTransactionManager platformTransactionManager() throws PropertyVetoException{
+					return new DataSourceTransactionManager(dataSource());
+				}
+			}
+		}
+
+		Service:{
+
+			@Service
+			public class OrderService {
+
+				@Autowired
+				private OrderDao orderDao;
+
+				@Transactional
+				public void addOrder(){
+					//int a = 1/0;
+					orderDao.insert();
+					//
+					System.out.println("插入数据库数据完成。。。。。。");
+				}
+			}
+
+		}
+
+		Dao:{
+
+			@Repository
+			public class OrderDao {
+				@Autowired
+				private JdbcTemplate jdbcTemplate;
+				public void insert(){ //insert into tbname values (null,'bbb','123',23,'1993-09-01');
+					//String s = "insert into order (ordertime,ordermoney,orderstatus) values (new Date(),19,0)";
+					//String s = "insert into order values (1,new Date(),19,0)";
+					//jdbcTemplate.execute(s);//update(s,new Date(),19,0);
+
+					//insert into tbname (id,username,password) values (null,'aaa','123');
+					String s = "insert into orderr ( ordertime, ordermoney, orderstatus) values (?,?,?)";
+					jdbcTemplate.update(s,new Date(),20,0);
+					//check the manual that corresponds to your MySQL server version for the right
+				   // 忘记order是mysql的关键字了，我用order做为表名，死活插不进去数据
+				}
+			}
+
+		}
+
+		测试：{
+			public class TestSpring11 {
+				@Test
+				public void test011(){  //
+					AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(Config11.class);
+					OrderService bean = applicationContext.getBean(OrderService.class);
+					bean.addOrder();
+					applicationContext.close();
+				}
+			}
+		}
+
+
+
+	}
 
 
 
@@ -978,6 +1087,10 @@ spring第八次课---声明式事务：{
 
 
 spring第九、十次课-----IOC源码解读：{
+
+	BeanFactory的两个重要后置处理器
+		1，扩展原理－BeanFactoryPostProcessor
+		2，扩展原理－BeanDefinitionRegistryPostProcessor
 
 }
 
@@ -1080,8 +1193,6 @@ springMVC-----手写springMVC：{
 }
 
 
-
-
 bean的初始化过程
 如果变量被所有的方法引用要声明为全局的，只备一个方法使用，没必要使用全局变量，
 FactoryBean和BeanFactory 的区别？{
@@ -1098,7 +1209,4 @@ AOP源码，processor后置处理器，
 war模式：将WEB工程以包的形式上传到服务器 ；
 war exploded模式：将WEB工程以当前文件夹的位置关系上传到服务器；
 https://blog.csdn.net/weixin_41614924/article/details/80986402
-
-
-
 
