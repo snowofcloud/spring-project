@@ -17,12 +17,15 @@ import org.springframework.stereotype.Component;
 public class BobBeanDefinitionRegistryPostProcessor implements BeanDefinitionRegistryPostProcessor {
 
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-        System.out.println("BobBeanDefinitionRegistryPostProcessor.postProcessBeanDefinitionRegistry(),bean的数量" + registry.getBeanDefinitionCount());
-        AbstractBeanDefinition definition = BeanDefinitionBuilder.rootBeanDefinition(Moon.class).getBeanDefinition();
+        System.out.println("BobBeanDefinitionRegistryPostProcessor.postProcessBeanDefinitionRegistry()" +
+                ",bean的数量" + registry.getBeanDefinitionCount());
+        AbstractBeanDefinition definition = BeanDefinitionBuilder.rootBeanDefinition(Moon.class).
+                getBeanDefinition();
         registry.registerBeanDefinition("registry",definition);
     }
 
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        System.out.println("BobBeanDefinitionRegistryPostProcessor.postProcessBeanFactory(),bean的数量" + beanFactory.getBeanDefinitionCount());
+        System.out.println("BobBeanDefinitionRegistryPostProcessor.postProcessBeanFactory(),bean的数量" +
+                beanFactory.getBeanDefinitionCount());
     }
 }

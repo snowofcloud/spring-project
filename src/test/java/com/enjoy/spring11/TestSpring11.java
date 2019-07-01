@@ -9,7 +9,6 @@ import com.enjoy.spring11.config.Config11;
  * @date 2019/5/10 19:43
  */
 public class TestSpring11 {
-
     @Test
     public void test011(){  //
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(Config11.class);
@@ -17,5 +16,4 @@ public class TestSpring11 {
         bean.addOrder();
         applicationContext.close();
     }
-
 }

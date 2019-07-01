@@ -1,0 +1,118 @@
+
+
+mybatis为什么抛弃传统的jdbc，采用ORM
+
+mybatis是数据库读写的技术框架，底层封装JDBC，
+
+classloader加载class对象有三种方式，
+	new一个对象隐式的加载
+	Class.forName("com.mysql.jdbc.Driver"):显示的加载
+	反射
+
+
+
+
+
+Class.forName("com.mysql.jdbc.Driver"):显示的加载
+加载之后，从驱动管理器中拿到一个连接，
+	Connection connection = DriverManager.getConnection("","",“”)
+	Statement statement = connection.createStatement();//创建一个Statement执行sql
+	ResultSet rs = statement.executeQuert(sql);//执行完sql，返回一个结果集，
+	
+	
+	
+
+	
+Statement每次都要去数据库查，	
+PreparedStatement:预编译的过程，第一次查询会进行缓存(缓存包括查询语句，查询计划)，并缓存到数据库里， 
+	1/性能好,提高访问效率，第一查询很痛苦，第二次就快了
+	2/占位符同时避免sql注入，
+mybatis默认的配置及所有sql语句的执行都是PreparedStatement，
+	# $符号底层就是Statement和PreparedStatement；
+	
+	更新操作比读多一个步骤，加了一个事务的管理，
+
+
+为什么不用jdbc:
+	工作量大，操作数据库至少需要56步骤；
+	技术代码和业务代码耦合在一块；
+	手动关闭资源，带来隐患。
+
+POJO（Plain Ordinary Java Object）简单的Java对象
+ORM(Object Relational Mapping)对象关系映射，ORM模型就是数据库表和简单java对象(POJO)的映射模型，
+	它主要解决的是数据库数据和POJO对象的相互映射。
+	是通过配文件自动完成的映射，而JDBC是手动完成的。
+	ORM带来的好处：
+		1、更加贴合面向对象的编程语境，java程序员最喜欢的知识；
+		2、技术和业务解耦，java程序员无需对数据库相关知识深入了解；
+		3、不用担心，不释放数据库连接资源。
+
+mybatis本质是一种半自动化的ORM框架，面向接口编程的，没有实现类，有map.xml文件，
+mybatis映射文件三要素：
+	SQL
+	映射规则
+	POJO
+
+	sqlSessionFactoryBuilder读取核心配置文件和.xml文件，放到内存对象里面去， //1:07:32
+	sqlSessionFactory读取sqlSessionFactoryBuilder配置信息，拷贝一份放到自己里面，维护一个数据库连接池，//重点好好改
+	sqlSessionFactory是一个容器，生命周期：整个程序的启动到停止。
+	
+	sqlSession
+	SqlSession：代表一次数据库连接，可以直接发送SQL执行，也可以通过调用Mapper访问数据库；
+		线程不安全，要保证线程独享（方法级）；
+	SQL Mapper：由一个Java接口和XML文件组成，包含了要执行的SQL语句和结果集映射规则。方法级别生命周期；
+
+	查出User信息，转换，动态代理加载mapper.xml文件信息，
+	
+	sqlSessionFactoryBuilder重新讲了：//1:27:32
+	
+
+
+别名让我们更加方便的去做映射，
+
+mapper文件从哪里去找？
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	

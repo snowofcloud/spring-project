@@ -25,10 +25,10 @@ public class Config11 {
     public DataSource dataSource() throws PropertyVetoException {
 
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
-        dataSource.setUser("root2");
-        dataSource.setPassword("123456");
+        dataSource.setUser("root");
+        dataSource.setPassword("123");
         dataSource.setDriverClass("com.mysql.jdbc.Driver");
-        dataSource.setJdbcUrl("jdbc:mysql://localhost:3306/test");
+        dataSource.setJdbcUrl("jdbc:mysql://192.168.64.129:3306/spring_test");
         return dataSource;
     }
 

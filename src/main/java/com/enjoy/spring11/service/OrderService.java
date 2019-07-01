@@ -17,11 +17,9 @@ public class OrderService {
 
     @Transactional
     public void addOrder(){
-        int a = 1/0;
+        //int a = 1/0;
         orderDao.insert();
         //
         System.out.println("插入数据库数据完成。。。。。。");
-
     }
-
 }
